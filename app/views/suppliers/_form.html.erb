@@ -1,0 +1,80 @@
+<%= form_for @supplier, html: { class: 'form-horizontal' } do |f| %>
+  <% if @supplier.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@supplier.errors.count, "error") %> prohibited this supplier from being saved:</h2>
+
+      <ul>
+      <% @supplier.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :identifier, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :identifier, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :name, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :name, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :contact_name, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :contact_name, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :contact_mail, class: 'control-label' %>
+    <div class="controls">
+      <%= f.email_field :contact_mail, class: 'email_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :address, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_area :address, required: true, class: 'text_area' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :country_code, class: 'control-label' %>
+    <div class="controls">
+      <%= f.country_select("country_code", nil, { iso_codes: true }, { required: true }) %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :shipping_address, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_area :shipping_address, required: true, class: 'text_area' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :phone, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :phone, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :fax, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :fax, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :payment_rules, class: 'control-label' %>
+    <div class="controls">
+      <%= f.select :payment_rule_ids, PaymentRule.pluck(:name, :id), { class: 'select' }, { multiple: true, required: true } %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                suppliers_path, :class => 'btn' %>
+  </div>
+<% end %>

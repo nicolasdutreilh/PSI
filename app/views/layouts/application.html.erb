@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Plaisir Selection International</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+    <style>
+      body {
+        padding-top: 60px;
+      }
+    </style>
+    <!--[if lt IE 9]>
+      <script src="../assets/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/">Plaisir Selection International</a>
+          <div class="nav-collapse collapse">
+            <%- if user_signed_in? %>
+              <ul class="nav pull-right">
+                <li id="user-menu" class="dropdown">
+                  <a href="#" id="user-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Logged in as <%= current_user.email %> <b class="caret"></b></a>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="user-dropdown">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= edit_user_registration_path %>">Settings</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow">Sign Out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            <%- end -%>
+            <ul class="nav">
+              <li class="<%= 'active' if request.path == '/' %>"><a href="/">Calendar</a></li>
+              <li id="third-party-menu" class="dropdown <%= 'active' if request.path.starts_with?(clients_path) || request.path.starts_with?(suppliers_path) || request.path.starts_with?(banks_path) %>" >
+                <a href="#" id="third-party-dropdown" role="button" class="dropdown-toggle" data-toggle="dropdown">Third Parties <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="third-party-dropdown">
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= clients_path %>">Clients</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= suppliers_path %>">Suppliers</a></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<%= banks_path %>">Banks</a></li>
+                </ul>
+              </li>
+               <li class="<%= 'active' if request.path.starts_with?(invoices_path) %>"><a href="<%= invoices_path %>">Invoices</a></li>
+               <li class="<%= 'active' if request.path.starts_with?(payment_rules_path) %>"><a href="<%= payment_rules_path %>">Payment Rules</a></li>
+               <%- if user_signed_in? && current_user.admin? -%>
+                <li class="<%= 'active' if request.path.starts_with?(accounts_path) %>"><a href="<%= accounts_path %>">Accounts</a></li>
+               <%- end -%>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <%- if notice.present? -%>
+        <div class="alert alert-success alert-block">
+          <%= notice %>
+        </div>
+      <%- end -%>
+      <%- if alert.present? -%>
+        <div class="alert alert-error alert-block">
+          <%= alert %>
+        </div>
+      <%- end -%>
+      <%= yield %>
+    </div>
+  </body>
+</html>

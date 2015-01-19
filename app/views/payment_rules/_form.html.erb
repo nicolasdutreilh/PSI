@@ -1,0 +1,50 @@
+<%= form_for @payment_rule, html: { class: 'form-horizontal' } do |f| %>
+  <% if @payment_rule.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@payment_rule.errors.count, "error") %> prohibited this payment rule from being saved:</h2>
+
+      <ul>
+      <% @payment_rule.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :name, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :name, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :percent, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :percent, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :period, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :period, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :since, class: 'control-label' %>
+    <div class="controls">
+      <%= f.select :since, PaymentRule::SINCE_VALUES.each_with_index.to_a, required: true, class: 'select' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :end_of_month, class: 'control-label' %>
+    <div class="controls">
+      <%= f.check_box :end_of_month, class: 'check_box' %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                payment_rules_path, :class => 'btn' %>
+  </div>
+<% end %>

@@ -1,0 +1,21 @@
+<div class="page-header">
+  <h1><%=t '.title', :default => 'Calendar' %></h1>
+</div>
+
+<%= calendar @events do |event| %>
+  <div data-title="<b>Invoice</b> <%= event.invoice.identifier =%>"
+       data-content="<p><b>Type:</b> <%= event.invoice.recipient_type =%><br>
+                        <b>Name:</b> <%= link_to(event.invoice.recipient.name, event.invoice.recipient).to_str %><br>
+                        <b>Amount: </b><%= event.amount %></p>
+                     <p><%= link_to(t('.show', default: t('helpers.links.show')), event.invoice, class: 'btn btn-mini btn-info').to_str %>
+                        <%= link_to(t('.show', default: t('helpers.links.edit')), edit_invoice_path(event.invoice), class: 'btn btn-mini btn-success').to_str %></p>
+                     <p><%= event.paid? ? link_to(t('.unpay', default: t('helpers.links.unpay')), unpay_invoice_payment_path(event), class: 'btn btn-mini btn-warning').to_str :
+                                          link_to(t('.pay', default: t('helpers.links.pay')), pay_invoice_payment_path(event), class: 'btn btn-mini btn-success').to_str %></p>"
+       class="label label-<%= css_label_for_payment(event) %>">Invoice <%= event.invoice.identifier %> - <%= event.amount %></div>
+<% end %>
+
+<script>
+  $(function() {
+    $('.label').popover({ placement: 'top', html: true });
+  });
+</script>

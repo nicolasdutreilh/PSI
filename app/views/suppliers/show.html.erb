@@ -1,0 +1,49 @@
+<%- model_class = Supplier -%>
+<div class="page-header">
+  <h1><%=t '.title', default: model_class.model_name.human.titleize %></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:identifier) %>:</strong></dt>
+  <dd><%= @supplier.identifier %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
+  <dd><%= @supplier.name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contact_name) %>:</strong></dt>
+  <dd><%= display_value(@supplier.contact_name) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contact_mail) %>:</strong></dt>
+  <dd><%= display_mail_to(@supplier.contact_mail) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:address) %>:</strong></dt>
+  <dd><%= display_text(@supplier.address) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:country_name) %>:</strong></dt>
+  <dd><%= @supplier.country_name %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:shipping_address) %>:</strong></dt>
+  <dd><%= display_text(@supplier.shipping_address) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:phone) %>:</strong></dt>
+  <dd><%= @supplier.phone %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:fax) %>:</strong></dt>
+  <dd><%= display_value(@supplier.fax) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:payment_rules) %>:</strong></dt>
+  <dd>
+   <ul>
+    <%- @supplier.payment_rules.each do |rule| -%>
+     <li><%= link_to rule.name, rule %></li>
+    <%- end -%>
+   </ul>
+  </dd>
+  <dt><strong><%= model_class.human_attribute_name(:created_at) %>:</strong></dt>
+  <dd><%=l @supplier.created_at %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:updated_at) %>:</strong></dt>
+  <dd><%=l @supplier.updated_at %></dd>
+</dl>
+
+<div class="form-actions">
+  <%= link_to t('.back', default: t("helpers.links.back")),
+              suppliers_path, class: 'btn' %>
+  <%= link_to t('.edit', default: t("helpers.links.edit")),
+              edit_supplier_path(@supplier), class: 'btn' %>
+  <%= link_to t('.destroy', default: t("helpers.links.destroy")),
+              supplier_path(@supplier),
+              method: 'delete',
+              data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) },
+              class: 'btn btn-danger' %>
+</div>

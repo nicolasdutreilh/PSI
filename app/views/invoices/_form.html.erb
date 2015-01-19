@@ -1,0 +1,89 @@
+<%= form_for @invoice, html: { class: 'form-horizontal' } do |f| %>
+  <% if @invoice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+
+      <ul>
+      <% @invoice.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="control-group">
+    <%= f.label :recipient_type, class: 'control-label' %>
+    <div class="controls">
+      <%= f.select :recipient_type, ['Client', 'Supplier'], required: true, class: 'select' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :recipient_id, class: 'control-label' %>
+    <div class="controls">
+      <%= f.select :recipient_id, (@invoice.recipient_type.blank? || @invoice.recipient_type == 'Client' ? @clients : @suppliers), required: true, class: 'select' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :identifier, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :identifier, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :amount, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :amount, required: true, class: 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :ordered_at, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :ordered_at, required: true, class: 'text_field datepicker' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :invoiced_at, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :invoiced_at, class: 'text_field datepicker' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :shipped_at, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :shipped_at, class: 'text_field datepicker' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :delivered_at, class: 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :delivered_at, class: 'text_field datepicker' %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+    <%= link_to t('.cancel', default: t("helpers.links.cancel")),
+                invoices_path, :class => 'btn' %>
+  </div>
+<% end %>
+
+<script>
+  var data = {
+    Client: <%= @clients.to_json.html_safe %>,
+    Supplier: <%= @suppliers.to_json.html_safe %>
+  };
+
+  $(function() {
+    $('#invoice_recipient_type').on('change', function() {
+      $('#invoice_recipient_id option').remove();
+
+      var name = $(this).val();
+
+      $.each(data[name], function(index, value) {
+        $('#invoice_recipient_id').append($("<option>",{ value: value[1], text: value[0] }));
+      });
+    });
+
+    $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+  });
+</script>
